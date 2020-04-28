@@ -1,5 +1,5 @@
 # SAGG
-Supplementary codes for "Amiri, S. (2020). Classification via Aggregating on permuted Variables".  
+Supplementary codes for "Amiri, S. (2020). How Aggregating improves the Classification's accuracy".  
 
 Note: This is an early test release of the package, and only for experimental use. 
 ******* If you see any errors, please send an email to "saeid.amiri1@gmail.com" with subject "sagg" *******
