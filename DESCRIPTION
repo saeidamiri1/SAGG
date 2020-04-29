@@ -1,13 +1,13 @@
 Package: sagging
 Type: Package
-Title: Subspace AGGing on permutated variables
+Title: Subspace AGGregatting
 Version: 0.5
-Date: 2016-11-23
+Date: 2020-04-23
 Author: Saeid Amiri.
 Maintainer: Saeid Amiri <saeid.amiri1@gmail.com>
 Depends:
     R (>= 3.3.1)
 Imports: tree, class
-Description: This package implements the classification methods discussed in Amiri, S. (2016). Classification via aggregating on permutated variable.
+Description: This package implements the classification methods discussed in Amiri, S. (2020). How Aggregating improves the Classification's accuracy.
 License: GPL (>= 2)
 LazyLoad: yes

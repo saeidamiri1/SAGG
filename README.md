@@ -7,24 +7,17 @@ Note: This is an early test release of the package, and only for experimental us
 This page explains the numerical evaluations done on the real data in Section 5.2.  
 
 
-#I. Installing the 'sagging' library.
-########################The coding are done under R version 3.3.1.
+# I. Install the 'sagging' library.
+########################The coding are done under R version 4.0.0.
 ########################Github: https://github.com/saeidamiri1/sagg
 ####################################################################################
-####################################################################################
-####################################################################################
-########################################## Install lktuple library in your R\Rstudio
-##### Under Mac: the source is  stored in the Github, to install the sagging library in R, just run the following command
-install.packages("https://github.com/saeidamiri1/sagg/blob/master/sagging_0.5.tgz?raw=true", repos = NULL, type="source")
 
-##### Under Windows: the source is  stored in the Github, to install the sagging library in R, 
-####  first download it from [link]
-####  run the following command to install library  
+library("devtools")
+devtools::install_github('saeidamiri1/sagg')
 
-install.packages("downloadfolder\sagging_0.5.zip", repos=NULL, type="source")
+install.packages('https://cran.r-project.org/src/contrib/Archive/ESKNN/ESKNN_1.0.tar.gz', repo=NULL, type="source")
 
-
-#II.  Load libraries
+# II.  Load libraries
 ##################################
 #### load library
 library(sagging)
