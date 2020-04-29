@@ -7,7 +7,7 @@ Note: This is an early test release of the package, and only for experimental us
 This page explains the numerical evaluations done on the real data in Section 5.2.  
 
 
-# I. Install the 'sagging' library.
+# I. Install the 'sagg' library.
 ##### The coding are done under R version 4.0.0.
 ##### Github: https://github.com/saeidamiri1/sagg
 
