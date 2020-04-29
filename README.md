@@ -8,39 +8,39 @@ This page explains the numerical evaluations done on the real data in Section 5.
 
 
 # I. Install the 'sagging' library.
-########################The coding are done under R version 4.0.0.
-########################Github: https://github.com/saeidamiri1/sagg
-####################################################################################
+##### The coding are done under R version 4.0.0.
+##### Github: https://github.com/saeidamiri1/sagg
 
 library("devtools")
 devtools::install_github('saeidamiri1/sagg')
-
 install.packages('https://cran.r-project.org/src/contrib/Archive/ESKNN/ESKNN_1.0.tar.gz', repo=NULL, type="source")
 
 # II.  Load libraries
-##################################
-#### load library
+##### load library
+```
 library(sagging)
+```
 
-##################################
-#### Load the following libraries in your R
+##### Load the following libraries in your R
+```
 library(tree)
 library(class)
 library(ESKNN)
+```
 
-
-#III. Read Data
-##################################
-#### Load Sonar data to achieve the numerical analysis
+# III. Read Data
+##### Load Sonar data to achieve the numerical analysis
+```
 data("Sonar")
 Class<-NULL
 Class[Sonar[,ncol(Sonar)]=="R"]<-1
 Class[Sonar[,ncol(Sonar)]=="M"]<-2
 Sonar<-cbind(Sonar[,-ncol(Sonar)],Class)
 Dat<-Sonar
+```
 
-#IV. Run the simulations
-
+# IV. Run the simulations
+```
 B<-150
 seb1<-seb2<-seb3<-seb4<-seb5<-seb6<-seb7<-seb8<-seb9<-NULL
 i<-1
@@ -83,8 +83,9 @@ while (i<1000){
 
   i<-i+1
 }
+```
 
-
+```
 > round(c(mean(seb1),mean(seb2),mean(seb3),mean(seb4),mean(seb5),mean(seb6),mean(seb7), mean(seb8), mean(seb9)),3)
 
 [1] 0.288 0.212 0.158 0.157 0.393 0.182 0.497 0.129 0.132
@@ -92,3 +93,4 @@ while (i<1000){
 >  round(c(sd(seb1),sd(seb2),sd(seb3),sd(seb4),sd(seb5),sd(seb6),sd(seb7), sd(seb8), sd(seb9)),4)
 
 [1] 0.0650 0.0662 0.0580 0.0575 0.0852 0.0525 0.0752 0.0530 0.0539
+```
