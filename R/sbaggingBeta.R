@@ -39,7 +39,7 @@ saggKNN<-function(DatL,DatT, ClassL, B,Nsub, alpha){
         IonLbTs<-Dat0[bn0,c(which(clust00==j))]
         s0s<-ClassL[bn1]
         prs<-c(knn(IonLbs,  IonLbTs,k=k0,cl=as.factor(s0s),prob = FALSE))
-        s1bs<-rbind(s1bs,mean(prs-ClassL[bn0]!=0))   
+        s1bs<-rbind(s1bs,mean(as.numeric(prs)-ClassL[bn0]!=0))   
         
         
          b1<-b1+1
@@ -81,7 +81,7 @@ saggTC<-function(DatL,DatT, ClassL, B,Nsub,alpha){
       Ion.tr <- tree(ClassL ~ ., IonLbs,mindev=1e-6, minsize=2)
       #    IonT<-Dat[T,rb]
       prs<-predict(Ion.tr,  IonLbTs)
-      s1bs<-rbind(s1bs,mean(prs-ClassL[bn0]!=0))   
+      s1bs<-rbind(s1bs,mean(as.numeric(prs)-ClassL[bn0]!=0))   
       
     }
   }

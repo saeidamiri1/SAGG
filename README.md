@@ -1,19 +1,14 @@
 # SAGG
-Supplementary codes for "Amiri, S. (2020). How Aggregating improves the Classification's accuracy".  
-
-Note: This is an early test release of the package, and only for experimental use. 
-******* If you see any errors, please send an email to "saeid.amiri1@gmail.com" with subject "sagg" *******
-
-This page explains the numerical evaluations done on the real data in Section 5.2.  
-
+Supplementary codes for "How Aggregating improves the Classification's accuracy".  
+This page explains the numerical evaluations done on the real data in Section 5.  
 
 # I. Install the 'sagg' library.
-##### The coding are done under R version 4.0.0.
-##### Github: https://github.com/saeidamiri1/sagg
+The code were done under R version 4.2.1.
 
+```
 library("devtools")
 devtools::install_github('saeidamiri1/sagg')
-install.packages('https://cran.r-project.org/src/contrib/Archive/ESKNN/ESKNN_1.0.tar.gz', repo=NULL, type="source")
+```
 
 # II.  Load libraries
 ##### load library
@@ -25,7 +20,11 @@ library(sagging)
 ```
 library(tree)
 library(class)
-library(ESKNN)
+library(MASS)
+library(adabag)
+library("randomForest")
+library("xgboost")
+
 ```
 
 # III. Read Data
@@ -41,14 +40,14 @@ Dat<-Sonar
 
 # IV. Run the simulations
 ```
-B<-150
-seb1<-seb2<-seb3<-seb4<-seb5<-seb6<-seb7<-seb8<-seb9<-NULL
+B<-200
+RF_res<-boost_res<-xgboost_res<-tc_res<- knn_res<-  bagg_tc_res<- sagg_tc_res <- bagg_knn_res <-sagg_knn_res<- NULL
 i<-1
 
 while (i<1000){
   N<-dim(Dat)[1]
   T0<-N*.2
-  L0<-N-T0
+
 
   T<-sample(N,T0,replace=FALSE)
   L<-setdiff(c(1:N),T)
@@ -58,39 +57,43 @@ while (i<1000){
   ClassL0<-Dat[L,ncol(Dat)]
   ClassT0<-Dat[T,ncol(Dat)]
 
-  s1<-tree.class(DatL=DatL0,DatT=DatT0,ClassL=ClassL0)
-  seb1[i]<-mean(abs(ClassT0-s1)!=0)
-  s1<-bagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,method="TC")
-  seb2[i]<-mean(abs(ClassT0-s1)!=0)
-  s1<-sagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,Nsub=10,alpha=.8,method="TC")
-  seb3[i]<-mean(abs(ClassT0-s1)!=0)
-  s1<-sagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,Nsub=10,alpha=1,method="TC")
-  seb4[i]<-mean(abs(ClassT0-s1)!=0)
 
-  model<-esknnClass(DatL0, ClassL0,k=NULL)
-  resClass<-Predict.esknnClass(model,DatT0,ClassT0,k=NULL)
-  seb5[i]<-mean(abs(ClassT0-resClass$PredClass)!=0)
+RF_m<-RF(DatL=DatL0,DatT=DatT0,ClassL=ClassL0)
+RF_res[i]<-mean(abs(ClassT0-as.numeric(RF_m)!=0))
 
-  s1<-KNN.class(DatL=DatL0,DatT=DatT0,ClassL=ClassL0)
-  seb6[i]<-mean(abs(ClassT0-s1)!=0)
-  s1<-bagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,method="KNN")
-  seb7[i]<-mean(abs(ClassT0-s1)!=0)
+boost_m<-boostR(DatL=DatL0,DatT=DatT0,ClassL=ClassL0)
+boost_res[i]<-mean(abs(ClassT0-as.numeric(boost_m)!=0))
+
+xgboost_m<-xgboostR(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,K0=2)
+xgboost_res[i]<-mean(abs(ClassT0-as.numeric(xgboost_m)!=0))
+
+
+tc_m<-tree.class(DatL=DatL0,DatT=DatT0,ClassL=ClassL0)
+tc_res[i]<-mean(abs(ClassT0-tc_m)!=0)
+
+knn_m<-KNN.class(DatL=DatL0,DatT=DatT0,ClassL=ClassL0)
+knn_res[i]<-mean(abs(ClassT0-as.numeric(knn_m))!=0)
+
+bagg_tc<-bagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,method="TC")
+bagg_tc_res[i]<-mean(abs(ClassT0-bagg_tc)!=0)
+
+sagg_tc<-sagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,Nsub=10,alpha=.8,method="TC")
+sagg_tc_res[i]<-mean(abs(ClassT0-sagg_tc)!=0)
+
+bagg_knn<-bagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,method="KNN")
+bagg_knn_res[i]<-mean(abs(ClassT0-bagg_knn)!=0)
   
-  s1<-sagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,Nsub=10,alpha=.8,method="KNN")
-  seb8[i]<-mean(abs(ClassT0-s1)!=0)
-  s1<-sagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,Nsub=10,alpha=1,method="KNN")
-  seb9[i]<-mean(abs(ClassT0-s1)!=0)
+sagg_knn<-sagg(DatL=DatL0,DatT=DatT0,ClassL=ClassL0,B,Nsub=10,alpha=.8,method="KNN")
+sagg_knn_res[i]<-mean(abs(ClassT0-sagg_knn)!=0)
 
   i<-i+1
 }
 ```
 
 ```
-> round(c(mean(seb1),mean(seb2),mean(seb3),mean(seb4),mean(seb5),mean(seb6),mean(seb7), mean(seb8), mean(seb9)),3)
 
-[1] 0.288 0.212 0.158 0.157 0.393 0.182 0.497 0.129 0.132
 
->  round(c(sd(seb1),sd(seb2),sd(seb3),sd(seb4),sd(seb5),sd(seb6),sd(seb7), sd(seb8), sd(seb9)),4)
+round(c(mean(RF_res),mean(boost_res),mean(xgboost_res),mean(tc_res),mean(knn_res),mean(bagg_tc_res),mean(sagg_tc_res), mean(bagg_knn_res),mean(sagg_knn_res)),3)
 
-[1] 0.0650 0.0662 0.0580 0.0575 0.0852 0.0525 0.0752 0.0530 0.0539
+round(c(sd(RF_res),sd(boost_res),sd(xgboost_res),sd(tc_res),sd(knn_res),sd(bagg_tc_res),sd(sagg_tc_res), sd(bagg_knn_res),sd(sagg_knn_res)),3)
 ```
